@@ -10,7 +10,9 @@ from app.database import get_db
 from app.erros import ErroNegocio, ErroValidacao, mensagem_validacao
 from app.schemas.escala import EscalaCreate
 from app.schemas.turno import TurnoCreate
+from app.services import atribuicoes as servico_atribuicoes
 from app.services import escalas as servico
+from app.services import servidores as servico_servidores
 from app.web.templating import templates
 
 router = APIRouter(tags=["web"], include_in_schema=False)
@@ -90,7 +92,11 @@ def pagina_escala(escala_id: int, request: Request, db: Session = Depends(get_db
         escala = servico.obter_escala(db, escala_id)
     except ErroNegocio as exc:
         return _erro(request, exc)
-    return templates.TemplateResponse(request, "escalas/detalhe.html", {"escala": escala})
+    contexto = {
+        "escala": escala,
+        "servidores": servico_servidores.listar_servidores(db, ativo=True),
+    }
+    return templates.TemplateResponse(request, "escalas/detalhe.html", contexto)
 
 
 @router.post("/escalas/{escala_id}/turnos", response_class=HTMLResponse)
@@ -124,3 +130,49 @@ def publicar_escala(escala_id: int, request: Request, db: Session = Depends(get_
     except ErroNegocio as exc:
         return _erro(request, exc)
     return Response(status_code=200, headers={"HX-Redirect": f"/escalas/{escala_id}"})
+
+
+def _turno_item(
+    request: Request, db: Session, turno_id: int, erro: ErroNegocio | None = None
+) -> Response:
+    """Devolve o cartão do turno (HTMX troca só ele), com a mensagem de erro se houver."""
+    turno = servico_atribuicoes.obter_turno(db, turno_id)
+    contexto = {
+        "turno": turno,
+        "escala": turno.escala,
+        "servidores": servico_servidores.listar_servidores(db, ativo=True),
+        "erro": erro.mensagem if erro else None,
+    }
+    status = erro.status_code if erro else 200
+    return templates.TemplateResponse(
+        request, "partials/turno_item.html", contexto, status_code=status
+    )
+
+
+@router.post("/escalas/turnos/{turno_id}/atribuir", response_class=HTMLResponse)
+async def atribuir_servidor(
+    turno_id: int, request: Request, db: Session = Depends(get_db)
+) -> Response:
+    form = await request.form()
+    try:
+        servidor_id = int(_texto(form, "servidor_id"))
+    except ValueError:
+        return _turno_item(request, db, turno_id, ErroValidacao("Selecione um servidor."))
+    try:
+        servico_atribuicoes.atribuir(db, turno_id, servidor_id)
+    except ErroNegocio as exc:
+        if exc.status_code == 404:
+            return _erro(request, exc)
+        return _turno_item(request, db, turno_id, exc)
+    return _turno_item(request, db, turno_id)
+
+
+@router.post("/escalas/atribuicoes/{atribuicao_id}/cancelar", response_class=HTMLResponse)
+def cancelar_atribuicao(
+    atribuicao_id: int, request: Request, db: Session = Depends(get_db)
+) -> Response:
+    try:
+        atribuicao = servico_atribuicoes.cancelar(db, atribuicao_id)
+    except ErroNegocio as exc:
+        return _erro(request, exc)
+    return _turno_item(request, db, atribuicao.turno_id)

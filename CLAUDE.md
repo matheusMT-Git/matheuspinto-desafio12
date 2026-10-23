@@ -190,11 +190,11 @@ Três sprints de 2 semanas, cada uma fechada por um critério de aceite; a dura�
 
 **Sprint 2 · Atribuição de turnos** (meta: CA2)
 
-- [ ] API de servidores com filtros por setor e situação
-- [ ] Serviço de atribuição: checar vagas, servidor ativo e choque de horário (inclusive turno que vira o dia)
-- [ ] Endpoints de atribuir e cancelar
-- [ ] Tela `/escalas/{id}`: grade de turnos com vagas livres e seletor de servidor via HTMX
-- [ ] Testes do CA2 com os 3 casos de recusa do seed
+- [x] API de servidores com filtros por setor e situação
+- [x] Serviço de atribuição: checar vagas, servidor ativo e choque de horário (inclusive turno que vira o dia)
+- [x] Endpoints de atribuir e cancelar
+- [x] Tela `/escalas/{id}`: grade de turnos com vagas livres e seletor de servidor via HTMX
+- [x] Testes do CA2 com os 3 casos de recusa do seed
 
 **Sprint 3 · Agenda e dashboard** (meta: CA3)
 

@@ -1,0 +1,37 @@
+{% set confirmadas = turno.atribuicoes|selectattr("status", "equalto", "confirmada")|list %}
+<article id="turno-{{ turno.id }}">
+  <header>
+    <strong>{{ turno.data|data_br }}</strong> · {{ turno.hora_inicio|hora_br }}–{{ turno.hora_fim|hora_br }}
+    · {{ turno.tipo }}
+    <span class="vagas {% if turno.vagas_livres == 0 %}lotado{% endif %}">
+      {{ turno.vagas_livres }} livre(s) de {{ turno.vagas }}
+    </span>
+  </header>
+  {% if erro %}<p class="erro" role="alert">{{ erro }}</p>{% endif %}
+  <ul>
+    {% for atribuicao in confirmadas %}
+    <li>
+      {{ atribuicao.servidor.nome }} ({{ atribuicao.servidor.matricula }})
+      {% if escala.status != "encerrada" %}
+      <button class="outline secondary pequeno"
+              hx-post="/escalas/atribuicoes/{{ atribuicao.id }}/cancelar"
+              hx-target="#turno-{{ turno.id }}" hx-swap="outerHTML">Cancelar</button>
+      {% endif %}
+    </li>
+    {% else %}
+    <li>Nenhum servidor escalado.</li>
+    {% endfor %}
+  </ul>
+  {% if escala.status != "encerrada" %}
+  <form hx-post="/escalas/turnos/{{ turno.id }}/atribuir"
+        hx-target="#turno-{{ turno.id }}" hx-swap="outerHTML" role="group">
+    <select name="servidor_id" aria-label="Servidor">
+      <option value="" selected disabled>Selecione o servidor</option>
+      {% for servidor in servidores %}
+      <option value="{{ servidor.id }}">{{ servidor.matricula }} – {{ servidor.nome }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Atribuir</button>
+  </form>
+  {% endif %}
+</article>

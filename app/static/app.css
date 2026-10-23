@@ -1,3 +1,6 @@
 .erro { color: #b42318; }
 .sucesso { color: #067647; }
 .turno-linha { align-items: center; }
+.pequeno { padding: .1rem .5rem; margin-left: .5rem; font-size: .8rem; width: auto; }
+.vagas { float: right; }
+.lotado { color: #b42318; }
