@@ -62,7 +62,7 @@ def calcular_dashboard(
             .join(Turno.escala)
             .where(*filtros)
             .group_by(Turno.data)
-        ).tuples()
+        )
     }
     ocupadas_por_dia = {
         dia: ocup
@@ -72,7 +72,7 @@ def calcular_dashboard(
             .join(Turno.escala)
             .where(*filtros, confirmada)
             .group_by(Turno.data)
-        ).tuples()
+        )
     }
     serie = []
     for deslocamento in range((fim - inicio).days + 1):
@@ -90,7 +90,7 @@ def calcular_dashboard(
         .group_by(Turno.id, Escala.id)
         .having(Turno.vagas - ocupadas_turno > 0)
         .order_by(Turno.data, Turno.hora_inicio, Turno.id)
-    ).tuples()
+    )
     turnos_com_vaga = [
         TurnoComVaga(
             id=turno.id,
