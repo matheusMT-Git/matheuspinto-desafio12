@@ -6,7 +6,7 @@
 <article>
   <header>Nova escala</header>
   <form hx-post="/escalas" hx-target="#resultado" hx-swap="innerHTML"
-        hx-on::after-request="if (event.detail.successful) this.reset()">
+        hx-on::after-request="if (event.target === this && event.detail.successful) this.reset(), document.getElementById('turnos').replaceChildren()">
     <label>Nome
       <input name="nome" required maxlength="160" placeholder="Ex.: Atendimento CAC – Semana 45">
     </label>
