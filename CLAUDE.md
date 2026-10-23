@@ -198,12 +198,12 @@ Três sprints de 2 semanas, cada uma fechada por um critério de aceite; a dura�
 
 **Sprint 3 · Agenda e dashboard** (meta: CA3)
 
-- [ ] Serviço e endpoint de agenda (período máx. 31 dias, filtros por servidor e setor)
-- [ ] Tela `/agenda` em visão semanal
-- [ ] Serviço e endpoint do dashboard com os 3 indicadores e a série por dia
-- [ ] Tela `/` com cartões, alertas de ocupação, gráfico e lista de turnos com vaga
-- [ ] Testes do CA3 conferindo 12 turnos, 8 escalados e 9 vagas livres de 31
-- [ ] README com instalação, seed e roteiro da demonstração
+- [x] Serviço e endpoint de agenda (período máx. 31 dias, filtros por servidor e setor)
+- [x] Tela `/agenda` em visão semanal
+- [x] Serviço e endpoint do dashboard com os 3 indicadores e a série por dia
+- [x] Tela `/` com cartões, alertas de ocupação, gráfico e lista de turnos com vaga
+- [x] Testes do CA3 conferindo 12 turnos, 8 escalados e 9 vagas livres de 31
+- [x] README com instalação, seed e roteiro da demonstração
 
 ## Instruções para o Claude Code
 

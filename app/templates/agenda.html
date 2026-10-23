@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block titulo %}Agenda · Escalas de Atendimento{% endblock %}
+{% block conteudo %}
+<h1>Agenda</h1>
+
+<form method="get" action="/agenda" class="grid">
+  <label>Semana de <input type="date" name="semana" value="{{ segunda.isoformat() }}"></label>
+  <label>Servidor
+    <select name="servidor_id">
+      <option value="">Todos</option>
+      {% for s in servidores %}
+      <option value="{{ s.id }}" {% if s.id == servidor_id %}selected{% endif %}>{{ s.matricula }} – {{ s.nome }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <label>Setor
+    <select name="setor_id">
+      <option value="">Todos</option>
+      {% for s in setores %}
+      <option value="{{ s.id }}" {% if s.id == setor_id %}selected{% endif %}>{{ s.sigla }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <button type="submit">Consultar</button>
+</form>
+
+<nav class="semana">
+  {% set filtros = "&servidor_id=" ~ (servidor_id or "") ~ "&setor_id=" ~ (setor_id or "") %}
+  <a href="/agenda?semana={{ anterior.isoformat() }}{{ filtros }}">← Semana anterior</a>
+  <strong>{{ segunda|data_br }} a {{ domingo|data_br }} · {{ total_turnos }} turno(s)</strong>
+  <a href="/agenda?semana={{ proxima.isoformat() }}{{ filtros }}">Próxima semana →</a>
+</nav>
+
+<div class="semana-grade">
+  {% for dia in dias %}
+  <section class="dia">
+    <h4>{{ dia.nome }} <small>{{ dia.data.strftime("%d/%m") }}</small></h4>
+    {% for t in dia.turnos %}
+    <article class="turno-agenda">
+      <strong>{{ t.hora_inicio|hora_br }}–{{ t.hora_fim|hora_br }}</strong> · {{ t.tipo }}
+      <small>{{ t.setor_sigla }} · <a href="/escalas/{{ t.escala_id }}#turno-{{ t.id }}">{{ t.vagas_livres }} livre(s) de {{ t.vagas }}</a></small>
+      <ul>
+        {% for s in t.servidores %}<li>{{ s.nome }}</li>{% else %}<li>—</li>{% endfor %}
+      </ul>
+    </article>
+    {% else %}
+    <p class="vazio">Sem turnos</p>
+    {% endfor %}
+  </section>
+  {% endfor %}
+</div>
+{% endblock %}

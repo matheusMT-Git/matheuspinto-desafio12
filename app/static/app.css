@@ -4,3 +4,17 @@
 .pequeno { padding: .1rem .5rem; margin-left: .5rem; font-size: .8rem; width: auto; }
 .vagas { float: right; }
 .lotado { color: #b42318; }
+.cartoes { margin-bottom: 1rem; }
+.cartao { margin-bottom: 0; text-align: center; }
+.cartao .numero { font-size: 2.5rem; font-weight: 700; margin: 0; }
+.cartao .numero span { font-size: 1rem; font-weight: 400; }
+.vagas-alerta { background: #fef3c7; color: #78350f; }
+.vagas-critico { background: #fee2e2; color: #7f1d1d; }
+.semana { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.semana-grade { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: .5rem; }
+.dia h4 { margin-bottom: .5rem; }
+.turno-agenda { padding: .5rem; margin-bottom: .5rem; font-size: .85rem; }
+.turno-agenda small, .turno-agenda ul { display: block; margin: 0; }
+.turno-agenda ul { padding-left: 1rem; }
+.vazio { color: #6b7280; font-size: .85rem; }
+@media (max-width: 900px) { .semana-grade { grid-template-columns: 1fr; } }

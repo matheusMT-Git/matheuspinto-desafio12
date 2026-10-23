@@ -29,3 +29,6 @@ extend-exclude = [".venv", "alembic/versions"]
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B"]
 ignore = ["B008"]  # Depends() em argumentos é o idioma do FastAPI
+
+[tool.setuptools.packages.find]
+include = ["app*"]

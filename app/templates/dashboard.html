@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block titulo %}Dashboard · Escalas de Atendimento{% endblock %}
+{% block conteudo %}
+<h1>Dashboard</h1>
+
+<form method="get" action="/" class="grid">
+  <label>Início <input type="date" name="inicio" value="{{ inicio.isoformat() }}"></label>
+  <label>Fim <input type="date" name="fim" value="{{ fim.isoformat() }}"></label>
+  <label>Setor
+    <select name="setor_id">
+      <option value="">Todos</option>
+      {% for setor in setores %}
+      <option value="{{ setor.id }}" {% if setor.id == setor_id %}selected{% endif %}>{{ setor.sigla }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <button type="submit">Filtrar</button>
+</form>
+<p class="periodo">Período: {{ inicio|data_br }} a {{ fim|data_br }}</p>
+
+{% if erro %}
+<p class="erro" role="alert">{{ erro }}</p>
+{% else %}
+<div class="grid cartoes">
+  <article class="cartao">
+    <small>Turnos programados</small>
+    <p class="numero">{{ dados.turnos_programados }}</p>
+  </article>
+  <article class="cartao">
+    <small>Pessoas escaladas</small>
+    <p class="numero">{{ dados.pessoas_escaladas }}</p>
+  </article>
+  <article class="cartao vagas-{{ dados.vagas.nivel }}">
+    <small>Vagas livres</small>
+    <p class="numero">{{ dados.vagas.livres }} <span>de {{ dados.vagas.total }}</span></p>
+    <small>{{ dados.vagas.ocupacao_percentual }}% ocupado
+      {% if dados.vagas.nivel == "critico" %}· crítico{% elif dados.vagas.nivel == "alerta" %}· atenção{% endif %}
+    </small>
+  </article>
+</div>
+
+<article>
+  <header>Vagas ocupadas × livres por dia</header>
+  <canvas id="grafico" height="110" aria-label="Gráfico de vagas ocupadas e livres por dia"></canvas>
+</article>
+
+<article>
+  <header>Turnos com vaga aberta</header>
+  {% if dados.turnos_com_vaga %}
+  <table>
+    <thead><tr><th>Data</th><th>Horário</th><th>Escala</th><th>Livres</th><th></th></tr></thead>
+    <tbody>
+      {% for t in dados.turnos_com_vaga %}
+      <tr>
+        <td>{{ t.data|data_br }}</td>
+        <td>{{ t.hora_inicio|hora_br }}–{{ t.hora_fim|hora_br }} ({{ t.tipo }})</td>
+        <td>{{ t.escala_nome }}</td>
+        <td>{{ t.vagas_livres }} de {{ t.vagas }}</td>
+        <td><a href="/escalas/{{ t.escala_id }}#turno-{{ t.id }}">Atribuir</a></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>Nenhum turno com vaga aberta no período.</p>
+  {% endif %}
+</article>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script>
+  new Chart(document.getElementById("grafico"), {
+    type: "bar",
+    data: {
+      labels: {{ rotulos|tojson }},
+      datasets: [
+        { label: "Ocupadas", data: {{ ocupadas|tojson }}, backgroundColor: "#2563eb" },
+        { label: "Livres", data: {{ livres|tojson }}, backgroundColor: "#cbd5e1" }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: { x: { stacked: true }, y: { stacked: true, beginAtZero: true, ticks: { precision: 0 } } }
+    }
+  });
+</script>
+{% endif %}
+{% endblock %}
