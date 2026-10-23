@@ -1,0 +1,21 @@
+{
+  "name": "govsafe360-do-zero",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/servidor-local.mjs",
+    "check:js": "node --check js/app.js && node --check js/politica.js && node --check js/dados.js && node --check js/exportacao.js && node --check tools/govsafe-mcp.mjs",
+    "mcp": "node tools/govsafe-mcp.mjs",
+    "test:policy": "node --test tests/politica.test.mjs",
+    "test:export": "node --test tests/exportacao.test.mjs",
+    "test:mcp": "node --test tests/mcp.test.mjs",
+    "test": "node --test tests/politica.test.mjs tests/exportacao.test.mjs tests/mcp.test.mjs",
+    "test:e2e": "playwright test"
+  },
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.0"
+  }
+}

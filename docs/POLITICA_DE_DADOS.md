@@ -1,0 +1,2 @@
+# Regras para o laboratório
+Use apenas dados sintéticos. Não informe CPFs, nomes de cidadãos, senhas, tokens, URLs internas, chaves, dados sensíveis ou documentos restritos. Navegador grava simulações no localStorage; em computadores compartilhados limpe dados ao fim. Não conecte a sistemas oficiais. Realize classificação real apenas com orientação da área responsável e normativos vigentes. `CLAUDE.md` descreve condutas desejadas, mas **não substitui** regras de permissão efetivas, políticas institucionais ou controles de rede.

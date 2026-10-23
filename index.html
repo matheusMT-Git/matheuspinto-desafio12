@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>GOVSAFE 360 · Construção assistida</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+  <div class="aviso" role="note">
+    <strong>Laboratório didático</strong> — NÃO é sistema institucional homologado. Use somente dados fictícios.
+  </div>
+
+  <header class="topo">
+    <div class="topo-inner">
+      <div>
+        <p class="eyebrow">SEMA/MT · UNIDADE VI · LABORATÓRIO</p>
+        <p class="marca">GOVSAFE 360</p>
+      </div>
+      <nav aria-label="Navegação principal">
+        <ul class="nav-lista">
+          <li><a href="#dashboard">Painel</a></li>
+          <li><a href="#cadastro">Cadastrar</a></li>
+          <li><a href="#cenarios">Cenários</a></li>
+          <li><a href="#auditoria">Auditoria</a></li>
+          <li><a href="#sobre">Sobre</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo" tabindex="-1">
+    <h1>GOVSAFE 360</h1>
+    <p id="status">Marco 4 — revisão humana simulada, auditoria local e exportações.</p>
+    <p id="mensagem-dados" class="mensagem" role="status" aria-live="polite"></p>
+
+    <section id="dashboard" aria-labelledby="titulo-painel">
+      <h2 id="titulo-painel">Painel</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>Total de cenários</h3>
+          <p class="card-num" id="total-geral">–</p>
+        </article>
+        <article class="card card-permitido">
+          <h3>Permitido</h3>
+          <p class="card-num" id="total-permitido">–</p>
+        </article>
+        <article class="card card-condicionado">
+          <h3>Condicionado</h3>
+          <p class="card-num" id="total-condicionado">–</p>
+        </article>
+        <article class="card card-nao-autorizado">
+          <h3>Não autorizado</h3>
+          <p class="card-num" id="total-nao-autorizado">–</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="cadastro" aria-labelledby="titulo-cadastro">
+      <h2 id="titulo-cadastro">Cadastrar cenário</h2>
+      <p class="nota aviso-dados"><strong>Use apenas dados fictícios.</strong> Não informe CPF, nomes de pessoas, senhas, tokens, chaves ou URLs internas.</p>
+      <form id="form-cadastro" novalidate>
+        <div class="campos">
+          <div class="campo campo-largo">
+            <label for="campo-finalidade">Finalidade</label>
+            <input id="campo-finalidade" name="finalidade" type="text" maxlength="120" required aria-describedby="erro-finalidade">
+            <p id="erro-finalidade" class="erro"></p>
+          </div>
+          <div class="campo">
+            <label for="campo-dado">Tipo de dado</label>
+            <select id="campo-dado" name="dado" required aria-describedby="erro-dado">
+              <option value="">Selecione…</option>
+            </select>
+            <p id="erro-dado" class="erro"></p>
+          </div>
+          <div class="campo">
+            <label for="campo-ambiente">Ambiente</label>
+            <select id="campo-ambiente" name="ambiente" required aria-describedby="erro-ambiente">
+              <option value="">Selecione…</option>
+            </select>
+            <p id="erro-ambiente" class="erro"></p>
+          </div>
+          <div class="campo">
+            <label for="campo-autonomia">Autonomia</label>
+            <select id="campo-autonomia" name="autonomia" required aria-describedby="erro-autonomia">
+              <option value="">Selecione…</option>
+            </select>
+            <p id="erro-autonomia" class="erro"></p>
+          </div>
+          <div class="campo campo-largo">
+            <label for="campo-justificativa">Justificativa</label>
+            <textarea id="campo-justificativa" name="justificativa" rows="3" maxlength="500" required aria-describedby="erro-justificativa"></textarea>
+            <p id="erro-justificativa" class="erro"></p>
+          </div>
+        </div>
+        <button type="submit" class="botao">Classificar e salvar</button>
+      </form>
+      <p id="mensagem-cadastro" class="mensagem" role="status" aria-live="polite"></p>
+    </section>
+
+    <section id="cenarios" aria-labelledby="titulo-cenarios">
+      <h2 id="titulo-cenarios">Cenários fictícios</h2>
+      <p class="nota">Decisões calculadas pelo motor de regras (js/politica.js). Classificação didática, sem valor de autorização institucional.</p>
+      <div class="filtros">
+        <div class="campo">
+          <label for="busca">Buscar na finalidade ou justificativa</label>
+          <input id="busca" type="search">
+        </div>
+        <div class="campo">
+          <label for="filtro-decisao">Decisão</label>
+          <select id="filtro-decisao">
+            <option value="">Todas</option>
+            <option value="permitido">Permitido</option>
+            <option value="condicionado">Condicionado</option>
+            <option value="nao_autorizado">Não autorizado</option>
+          </select>
+        </div>
+      </div>
+      <p id="contador" class="nota" role="status" aria-live="polite"></p>
+      <div class="table-wrap" tabindex="0" role="region" aria-labelledby="titulo-cenarios">
+        <table>
+          <caption class="sr-only">Cenários fictícios com tipo de dado, ambiente, autonomia, decisão e revisão humana simulada</caption>
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Finalidade</th>
+              <th scope="col">Dado</th>
+              <th scope="col">Ambiente</th>
+              <th scope="col">Autonomia</th>
+              <th scope="col">Decisão</th>
+              <th scope="col">Revisão</th>
+              <th scope="col">Ação</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-cenarios">
+            <tr><td colspan="8">Carregando cenários…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p id="mensagem-revisao" class="mensagem" role="status" aria-live="polite"></p>
+    </section>
+
+    <dialog id="dialogo-revisao" aria-labelledby="titulo-revisao">
+      <form id="form-revisao" novalidate>
+        <h2 id="titulo-revisao">Revisão humana simulada</h2>
+        <p id="revisao-resumo"></p>
+        <p id="revisao-atual" class="nota"></p>
+        <fieldset>
+          <legend>Ação do revisor fictício</legend>
+          <label class="opcao"><input type="radio" name="acao" value="aprovar" id="revisao-aprovar" aria-describedby="revisao-bloqueio"> Aprovar</label>
+          <label class="opcao"><input type="radio" name="acao" value="rejeitar" id="revisao-rejeitar"> Rejeitar</label>
+          <p id="revisao-bloqueio" class="nota"></p>
+        </fieldset>
+        <div class="campo">
+          <label for="revisao-justificativa">Justificativa da revisão (obrigatória)</label>
+          <textarea id="revisao-justificativa" name="justificativa" rows="3" maxlength="500" required aria-describedby="erro-revisao"></textarea>
+          <p id="erro-revisao" class="erro" role="alert"></p>
+        </div>
+        <p class="nota">A revisão é registrada à parte e não altera a decisão do motor.</p>
+        <div class="acoes">
+          <button type="submit" class="botao">Registrar revisão</button>
+          <button type="button" id="cancelar-revisao" class="botao botao-neutro">Cancelar</button>
+        </div>
+      </form>
+    </dialog>
+
+    <section id="auditoria" aria-labelledby="titulo-auditoria">
+      <h2 id="titulo-auditoria">Auditoria</h2>
+      <p class="nota aviso-dados">Histórico local e editável pelo navegador: <strong>não é auditoria imutável</strong> nem tem valor institucional.</p>
+      <div class="acoes">
+        <button type="button" id="exportar-csv" class="botao">Exportar matriz (CSV)</button>
+        <button type="button" id="exportar-json" class="botao">Exportar auditoria (JSON)</button>
+      </div>
+      <p id="total-eventos" class="nota" role="status" aria-live="polite"></p>
+      <ol id="lista-auditoria" class="auditoria" tabindex="0" aria-label="Eventos de auditoria, do mais recente para o mais antigo"></ol>
+    </section>
+
+    <section id="sobre" aria-labelledby="titulo-sobre">
+      <h2 id="titulo-sobre">Sobre e limites</h2>
+      <p>Protótipo didático, funciona offline e sem chamadas externas. Não há login, banco de dados nem integração com sistemas oficiais.</p>
+      <p>Os cenários cadastrados ficam apenas no armazenamento local deste navegador. Em computador compartilhado, limpe os dados ao terminar.</p>
+      <button type="button" id="limpar-dados" class="botao botao-secundario">Limpar dados locais</button>
+      <ul>
+        <li>Servidor MCP local — Marco 5.</li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="js/politica.js"></script>
+  <script src="js/dados.js"></script>
+  <script src="js/exportacao.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

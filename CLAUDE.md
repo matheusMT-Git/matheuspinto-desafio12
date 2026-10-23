@@ -1,0 +1,3 @@
+# GOVSAFE 360 — construção assistida do zero
+
+Você está em projeto INICIAL (Marco 0). Não confundir com ZIP de recuperação. Antes de editar: ler docs/REQUISITOS.md, docs/ARQUITETURA_V16.md e docs/BACKLOG_CONSTRUCAO_DO_ZERO.md. Trabalhar MARCO A MARCO; solicitar aprovação antes das edições; demonstrar arquivos/diffs/testes a cada ciclo. Não instalar sem autorização, não gerar senhas/tokens, não enviar dados institucionais. Só usar dados fictícios. Ao final do marco entregar resumo verificável e aguardar próximo marco. Não copiar a versão completa automaticamente: aluno deve observar a construção.
