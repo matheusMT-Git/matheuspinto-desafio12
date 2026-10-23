@@ -1,0 +1,20 @@
+<div id="turnos-escala"{% if oob %} hx-swap-oob="true"{% endif %}>
+  <table>
+    <thead>
+      <tr><th>Data</th><th>Horário</th><th>Tipo</th><th>Vagas</th><th>Livres</th></tr>
+    </thead>
+    <tbody>
+      {% for turno in escala.turnos %}
+      <tr>
+        <td>{{ turno.data|data_br }}</td>
+        <td>{{ turno.hora_inicio|hora_br }}–{{ turno.hora_fim|hora_br }}</td>
+        <td>{{ turno.tipo }}</td>
+        <td>{{ turno.vagas }}</td>
+        <td>{{ turno.vagas_livres }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5">Nenhum turno cadastrado.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>

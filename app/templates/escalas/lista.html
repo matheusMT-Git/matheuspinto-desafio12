@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block titulo %}Escalas · Escalas de Atendimento{% endblock %}
+{% block conteudo %}
+<h1>Escalas</h1>
+
+<article>
+  <header>Nova escala</header>
+  <form hx-post="/escalas" hx-target="#resultado" hx-swap="innerHTML"
+        hx-on::after-request="if (event.detail.successful) this.reset()">
+    <label>Nome
+      <input name="nome" required maxlength="160" placeholder="Ex.: Atendimento CAC – Semana 45">
+    </label>
+    <label>Setor
+      <select name="setor_id" required>
+        <option value="" disabled selected>Selecione</option>
+        {% for setor in setores %}
+        <option value="{{ setor.id }}">{{ setor.sigla }} – {{ setor.nome }}</option>
+        {% endfor %}
+      </select>
+    </label>
+    <div class="grid">
+      <label>Data inicial <input type="date" name="data_inicio" required></label>
+      <label>Data final <input type="date" name="data_fim" required></label>
+    </div>
+
+    <fieldset>
+      <legend>Turnos</legend>
+      <div id="turnos"></div>
+      <button type="button" class="secondary" hx-get="/escalas/turno-linha"
+              hx-target="#turnos" hx-swap="beforeend">Adicionar turno</button>
+    </fieldset>
+
+    <button type="submit">Cadastrar escala</button>
+  </form>
+  <div id="resultado" role="status"></div>
+</article>
+
+{% include "partials/lista_escalas.html" %}
+{% endblock %}

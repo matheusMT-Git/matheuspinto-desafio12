@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block titulo %}{{ escala.nome }} · Escalas de Atendimento{% endblock %}
+{% block conteudo %}
+<p><a href="/escalas">← Escalas</a></p>
+<h1>{{ escala.nome }}</h1>
+<p>
+  {{ escala.setor.sigla }} · {{ escala.data_inicio|data_br }} a {{ escala.data_fim|data_br }} ·
+  <strong>{{ escala.status }}</strong>
+</p>
+
+{% if escala.status == "rascunho" %}
+<button hx-post="/escalas/{{ escala.id }}/publicar" hx-target="#resultado">Publicar escala</button>
+{% endif %}
+
+{% if escala.status != "encerrada" %}
+<article>
+  <header>Incluir turno</header>
+  <form hx-post="/escalas/{{ escala.id }}/turnos" hx-target="#resultado" hx-swap="innerHTML">
+    <div class="grid">
+      <input type="date" name="data" aria-label="Data" required
+             min="{{ escala.data_inicio.isoformat() }}" max="{{ escala.data_fim.isoformat() }}">
+      <input type="time" name="hora_inicio" aria-label="Hora inicial" required>
+      <input type="time" name="hora_fim" aria-label="Hora final" required>
+      <select name="tipo" aria-label="Tipo">
+        {% for tipo in tipos_turno %}<option>{{ tipo }}</option>{% endfor %}
+      </select>
+      <input type="number" name="vagas" value="1" min="1" aria-label="Vagas" required>
+    </div>
+    <button type="submit">Incluir turno</button>
+  </form>
+</article>
+{% endif %}
+
+<div id="resultado" role="status"></div>
+{% include "partials/turnos_escala.html" %}
+{% endblock %}

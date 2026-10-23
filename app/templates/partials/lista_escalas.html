@@ -1,0 +1,20 @@
+<div id="lista-escalas"{% if oob %} hx-swap-oob="true"{% endif %}>
+  <table>
+    <thead>
+      <tr><th>Escala</th><th>Setor</th><th>Período</th><th>Status</th><th>Turnos</th></tr>
+    </thead>
+    <tbody>
+      {% for escala in escalas %}
+      <tr>
+        <td><a href="/escalas/{{ escala.id }}">{{ escala.nome }}</a></td>
+        <td>{{ escala.setor.sigla }}</td>
+        <td>{{ escala.data_inicio|data_br }} a {{ escala.data_fim|data_br }}</td>
+        <td>{{ escala.status }}</td>
+        <td>{{ escala.turnos|length }}</td>
+      </tr>
+      {% else %}
+      <tr><td colspan="5">Nenhuma escala cadastrada.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
