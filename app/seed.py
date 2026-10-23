@@ -4,11 +4,11 @@ from datetime import date, time
 from pathlib import Path
 
 from alembic.config import Config
-from sqlalchemy import text
+from sqlalchemy import inspect, text
 from sqlalchemy.orm import Session
 
 from alembic import command
-from app.database import SessionLocal, engine
+from app.database import Base, SessionLocal, engine
 from app.models import Atribuicao, Escala, Servidor, Setor, Turno
 
 RAIZ = Path(__file__).resolve().parent.parent
@@ -112,6 +112,15 @@ def recriar_banco() -> None:
     config.set_main_option("script_location", str(RAIZ / "alembic"))
     command.upgrade(config, "head")
 
+    with SessionLocal() as db:
+        carregar_seed(db)
+
+
+def garantir_banco() -> None:
+    """Cria o esquema e carrega o seed se o banco ainda não existir (uso no Vercel)."""
+    if inspect(engine).has_table("escalas"):
+        return
+    Base.metadata.create_all(engine)
     with SessionLocal() as db:
         carregar_seed(db)
 

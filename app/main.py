@@ -6,11 +6,17 @@ from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.api.v1 import router as api_v1
+from app.database import NO_VERCEL
 from app.erros import ErroNegocio, mensagem_validacao
+from app.seed import garantir_banco
 from app.web import escalas as web_escalas
 from app.web import paginas as web_paginas
 
 PASTA_STATIC = Path(__file__).parent / "static"
+
+if NO_VERCEL:
+    # Instância serverless: o banco SQLite temporário nasce junto com ela, já com o seed.
+    garantir_banco()
 
 app = FastAPI(title="Escalas de Atendimento")
 

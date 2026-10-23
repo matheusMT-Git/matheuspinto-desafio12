@@ -1,11 +1,20 @@
+import os
+import tempfile
 from collections.abc import Iterator
+from pathlib import Path
 from sqlite3 import Connection as SQLiteConnection
 
 from sqlalchemy import create_engine, event
 from sqlalchemy.engine import Engine
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
-DATABASE_URL = "sqlite:///./escalas.db"
+# No Vercel o disco do projeto é somente leitura; só o diretório temporário é gravável.
+NO_VERCEL = bool(os.environ.get("VERCEL"))
+DATABASE_URL = (
+    f"sqlite:///{(Path(tempfile.gettempdir()) / 'escalas.db').as_posix()}"
+    if NO_VERCEL
+    else "sqlite:///./escalas.db"
+)
 
 
 class Base(DeclarativeBase):
