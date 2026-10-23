@@ -1,7 +1,0 @@
-node_modules/
-.env
-.env.*
-!.env.example
-.vercel/
-evidencias/playwright-resultados/
-evidencias/relatorio-html/
